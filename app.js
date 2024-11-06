@@ -3,21 +3,19 @@ const app = express();
 const taskRouter = require('./routes/tasks');
 const { connectDB } = require('./db/connect');
 require('dotenv').config();
+const { notFound } = require('./middleware/not-found');
 const { TASKS_BASE_URL } = require('./routes/constants');
 
 // CONSTANTS
 const PORT = 3000;
 
-// STATIC SERVING
-app.use(express.static('./public'));
-
 // MIDDLEWARE
+app.use(express.static('./public'));
 app.use(express.json());
 
 // ROUTES
-app.get('/hello', (req, res) => res.send('Task Manager App'));
-
-app.use(TASKS_BASE_URL, taskRouter);
+app.use(TASKS_BASE_URL, taskRouter); // Tasks route
+app.use(notFound); //; Fallback
 
 const start = async () => {
   try {
