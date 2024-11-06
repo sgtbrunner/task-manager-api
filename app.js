@@ -8,6 +8,9 @@ const { TASKS_BASE_URL } = require('./routes/constants');
 // CONSTANTS
 const PORT = 3000;
 
+// STATIC SERVING
+app.use(express.static('./public'));
+
 // MIDDLEWARE
 app.use(express.json());
 
