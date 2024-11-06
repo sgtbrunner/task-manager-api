@@ -1,21 +1,71 @@
-const getAllTasks = (req, res) => {
-  res.send('all items');
+const Task = require('../models/Task');
+
+const getAllTasks = async (req, res) => {
+  try {
+    const tasks = await Task.find({});
+    res.status(200).json({ tasks });
+  } catch (error) {
+    res.status(500).json(error);
+  }
 };
 
-const createTask = (req, res) => {
-  res.send('create task');
+const createTask = async (req, res) => {
+  try {
+    const task = await Task.create(req.body);
+    res.status(201).json({ task });
+  } catch (error) {
+    res.status(500).json(error);
+  }
 };
 
-const getTask = (req, res) => {
-  res.send('get task');
+const getTask = async (req, res) => {
+  try {
+    const { id: taskId } = req.params;
+    const task = await Task.findById(taskId);
+
+    if (!task) {
+      return res.status(404).json({ message: `No task with id ${taskId}` });
+    }
+
+    res.status(200).json({ task });
+  } catch (error) {
+    res.status(500).json(error);
+  }
 };
 
-const updateTask = (req, res) => {
-  res.send('update task');
+const deleteTask = async (req, res) => {
+  try {
+    const { id: taskId } = req.params;
+    const task = await Task.findByIdAndDelete(taskId);
+
+    return !task
+      ? res.status(404).json({ message: `No task with id ${taskId}` })
+      : res.status(200).json({ task });
+  } catch (error) {
+    res.status(500).json(error);
+  }
 };
 
-const deleteTask = (req, res) => {
-  res.send('delete task');
+const updateTask = async (req, res) => {
+  try {
+    const { id: taskId } = req.params;
+    const data = req.body;
+
+    if (!data?.name) {
+      return res.status(400).json({ message: 'No valid body provided' });
+    }
+
+    const task = await Task.findByIdAndUpdate(taskId, data, {
+      new: true,
+      runValidators: true,
+    });
+
+    return !task
+      ? res.status(404).json({ message: `No task with id ${taskId}` })
+      : res.status(200).json({ task });
+  } catch (error) {
+    res.status(500).json(error);
+  }
 };
 
 module.exports = { getAllTasks, createTask, getTask, updateTask, deleteTask };
