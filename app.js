@@ -8,7 +8,7 @@ const errorHandler = require('./middleware/error-handler');
 const { TASKS_BASE_URL } = require('./routes/constants');
 
 // CONSTANTS
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // MIDDLEWARE
 app.use(express.static('./public'));
@@ -23,7 +23,7 @@ const start = async () => {
   try {
     const response = await connectDB(process.env.MONGO_URI);
     console.log(`MongoDB Connected: ${response.connection.host}`);
-    app.listen(PORT, console.log(`Server is listening on port ${PORT}`));
+    app.listen(PORT, console.log(`Server is listening on port ${PORT}...`));
   } catch (error) {
     console.error(error);
     console.log(
