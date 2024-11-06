@@ -3,7 +3,8 @@ const app = express();
 const taskRouter = require('./routes/tasks');
 const { connectDB } = require('./db/connect');
 require('dotenv').config();
-const { notFound } = require('./middleware/not-found');
+const notFound = require('./middleware/not-found');
+const errorHandler = require('./middleware/error-handler');
 const { TASKS_BASE_URL } = require('./routes/constants');
 
 // CONSTANTS
@@ -16,6 +17,7 @@ app.use(express.json());
 // ROUTES
 app.use(TASKS_BASE_URL, taskRouter); // Tasks route
 app.use(notFound); //; Fallback
+app.use(errorHandler);
 
 const start = async () => {
   try {
