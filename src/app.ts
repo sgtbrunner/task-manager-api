@@ -1,18 +1,20 @@
 import express from 'express';
-const app = express();
 import taskRouter from './routes/tasks';
 import { connectDB } from './db/connect';
-require('dotenv').config();
 import notFound from './middleware/not-found';
 import errorHandler from './middleware/error-handler';
 import { TASKS_BASE_URL } from './routes/constants';
 
+require('dotenv').config();
+
 // CONSTANTS
 const PORT = process.env.PORT || 3000;
 
+const app = express();
+
 // MIDDLEWARE
-app.use(express.static('./public'));
 app.use(express.json());
+app.use(express.static('./public'));
 
 // ROUTES
 app.use(TASKS_BASE_URL, taskRouter); // Tasks route
