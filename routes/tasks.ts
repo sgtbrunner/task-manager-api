@@ -1,15 +1,14 @@
-const express = require('express');
-const router = express.Router();
-
-const { ROOT_URL, TASK_ID } = require('./constants');
-
-const {
+import express from 'express';
+import { ROOT_URL, TASK_ID } from './constants';
+import {
   getAllTasks,
   createTask,
-  deleteTask,
   getTask,
   updateTask,
-} = require('../controllers/tasks');
+  deleteTask,
+} from '../controllers/tasks';
+
+const router = express.Router();
 
 // GET ALL TASKS
 router.route(ROOT_URL).get(getAllTasks);
@@ -26,4 +25,4 @@ router.route(TASK_ID).patch(updateTask);
 // DELETE A TASK
 router.route(TASK_ID).delete(deleteTask);
 
-module.exports = router;
+export default router;

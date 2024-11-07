@@ -1,11 +1,11 @@
-const express = require('express');
+import express from 'express';
 const app = express();
-const taskRouter = require('./routes/tasks');
-const { connectDB } = require('./db/connect');
+import taskRouter from './routes/tasks';
+import { connectDB } from './db/connect';
 require('dotenv').config();
-const notFound = require('./middleware/not-found');
-const errorHandler = require('./middleware/error-handler');
-const { TASKS_BASE_URL } = require('./routes/constants');
+import notFound from './middleware/not-found';
+import errorHandler from './middleware/error-handler';
+import { TASKS_BASE_URL } from './routes/constants';
 
 // CONSTANTS
 const PORT = process.env.PORT || 3000;
@@ -23,7 +23,9 @@ const start = async () => {
   try {
     const response = await connectDB(process.env.MONGO_URI);
     console.log(`MongoDB Connected: ${response.connection.host}`);
-    app.listen(PORT, console.log(`Server is listening on port ${PORT}...`));
+    app.listen(PORT, () =>
+      console.log(`Server is listening on port ${PORT}...`)
+    );
   } catch (error) {
     console.error(error);
     console.log(
